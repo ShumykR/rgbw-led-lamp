@@ -1,0 +1,17 @@
+.rgbw_cont {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.rgbw_input {
+    max-width: 90px;
+}
+
+.hsvw_cont {
+    display: grid;
+}
+
+.hsvw_range {
+    padding: 10px;
+}
+

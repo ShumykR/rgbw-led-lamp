@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Page</title>
+    <link rel="stylesheet" href="static/style.css" />
+    <link rel="stylesheet" href="static/switch.css" />
+    <link rel="stylesheet" href="static/color.css" />
+</head>
+<body>
+    <div class="main">
+        <h3>Color</h3>
+
+        <!--Color Circle-->
+        <p>!Color Circle!</p>
+
+        <div class="rgbw_cont">
+            <input class="rgbw_input"></input>
+            <input class="rgbw_input"></input>
+            <input class="rgbw_input"></input>
+            <input class="rgbw_input"></input>
+        </div>
+        
+        <div class="hsvw_cont">
+            <input class="hsvw_range" type="range" min="0" max="359">
+            <input class="hsvw_range" type="range" min="0" max="359">
+            <input class="hsvw_range" type="range" min="0" max="359">
+            <input class="hsvw_range" type="range" min="0" max="359">
+        </div>
+
+        <div class="on_switch">
+            <p>ON</p>
+            <label class="switch">
+                <input type="checkbox" />
+                <span class="slider round"></span>
+              </label>
+              <p>OFF</p>
+        </div>
+        
+
+          <div class="footer">
+            <button class="footer_but">Config</button>
+            <button class="footer_but">Light</button>
+          </div>
+    </div>
+</body>
+</html>
