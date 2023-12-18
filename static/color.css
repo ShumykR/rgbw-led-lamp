@@ -1,17 +1,58 @@
-.rgbw_cont {
-    display: grid;
-    grid-auto-flow: column;
+.rgbw_input_cont {
+    display: flex;
+    justify-content: center;
+}
+
+.rgbw_names {
+    display: flex;
+    justify-content: center;
+}
+
+.rgbw_names p {
+    width: 60px;
+    text-align: center;
+    margin: 0 5px;
 }
 
 .rgbw_input {
-    max-width: 90px;
+    max-width: 60px;
+    height: 30px;
+    border-radius: 8px;
+    border-width: 1px;
+    padding: 5px;
+    margin: 0 5px;
 }
 
 .hsvw_cont {
-    display: grid;
+    display: flex;
 }
 
 .hsvw_range {
     padding: 10px;
+    flex: 1;
 }
 
+.on_switch {
+    margin: 10px;
+    margin-bottom: 70px;
+}
+
+.switch_toright {
+    display: flex;
+    justify-content: end;
+}
+
+.on_switch p {
+    text-align: center;
+}
+
+.hsvw_names p {
+    height: 54px;
+    line-height: 54px;
+    text-align: center;
+}
+
+.hsvw_input_cont {
+    display: grid;
+    flex: 1;
+}

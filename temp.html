@@ -1,0 +1,109 @@
+<svg viewBox="-100 -100 600 600" class="card color-picker">
+  <defs>
+    <mask id="doughnut">
+      <circle
+        cx="200"
+        cy="200"
+        r="180"
+        stroke="white"
+        stroke-width="70"
+      ></circle>
+    </mask>
+    <linearGradient id="red-to-yellow">
+      <stop offset="0.1" stop-color="red"></stop>
+      <stop offset="0.9" stop-color="yellow"></stop>
+    </linearGradient>
+    <linearGradient id="yellow-to-lime">
+      <stop offset="0.1" stop-color="yellow"></stop>
+      <stop offset="0.9" stop-color="lime"></stop>
+    </linearGradient>
+    <linearGradient id="lime-to-aqua">
+      <stop offset="0.1" stop-color="lime"></stop>
+      <stop offset="0.9" stop-color="aqua"></stop>
+    </linearGradient>
+    <linearGradient id="aqua-to-blue">
+      <stop offset="0.1" stop-color="aqua"></stop>
+      <stop offset="0.9" stop-color="blue"></stop>
+    </linearGradient>
+    <linearGradient id="blue-to-magenta">
+      <stop offset="0.1" stop-color="blue"></stop>
+      <stop offset="0.9" stop-color="magenta"></stop>
+    </linearGradient>
+    <linearGradient id="magenta-to-red">
+      <stop offset="0.1" stop-color="magenta"></stop>
+      <stop offset="0.9" stop-color="red"></stop>
+    </linearGradient>
+  </defs>
+  <g mask="url(#doughnut)">
+    <path
+      d="M 200 0
+             A 200 200, 0, 0, 1, 373.2 100
+             L 200 200
+             Z"
+      fill="url(#red-to-yellow)"
+    ></path>
+    <path
+      d="M 200 0
+             A 200 200, 0, 0, 1, 373.2 100
+             L 200 200
+             Z"
+      transform="rotate(60 200 200)"
+      fill="url(#yellow-to-lime)"
+    ></path>
+    <path
+      d="M 200 0
+             A 200 200, 0, 0, 1, 373.2 100
+             L 200 200
+             Z"
+      transform="rotate(120 200 200)"
+      fill="url(#lime-to-aqua)"
+    ></path>
+    <path
+      d="M 200 0
+             A 200 200, 0, 0, 1, 373.2 100
+             L 200 200
+             Z"
+      transform="rotate(180 200 200)"
+      fill="url(#aqua-to-blue)"
+    ></path>
+    <path
+      d="M 200 0
+             A 200 200, 0, 0, 1, 373.2 100
+             L 200 200
+             Z"
+      transform="rotate(240 200 200)"
+      fill="url(#blue-to-magenta)"
+    ></path>
+    <path
+      d="M 200 0
+             A 200 200, 0, 0, 1, 373.2 100
+             L 200 200
+             Z"
+      transform="rotate(300 200 200)"
+      fill="url(#magenta-to-red)"
+    ></path>
+  </g>
+  <g>
+    <circle
+      cx="200"
+      cy="0"
+      r="35"
+      fill="red"
+      class="selector"
+      stroke="white"
+      stroke-width="3"
+    />
+  </g>
+  <text
+    x="200"
+    y="200"
+    text-anchor="middle"
+    font-size="20"
+    stroke="#FF0000"
+    fill="#FF0000"
+    class="hex"
+  >
+    #FF0000
+  </text>
+</svg>
+<script src="color_picker.js"></script>

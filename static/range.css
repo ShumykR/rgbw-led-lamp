@@ -1,0 +1,23 @@
+.hsvw_range {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+}
+
+.hsvw_range::-webkit-slider-runnable-track {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    height: 34px;
+    background-color: #707070;
+    border-radius: 10px;
+    padding: 0 4px;
+}
+
+.hsvw_range::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    height: 26px;
+    width: 26px;
+    margin-top: 4px;
+    border-radius: 10px;
+    background-color: #ccc;
+}

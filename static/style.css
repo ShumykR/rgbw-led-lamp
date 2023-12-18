@@ -89,6 +89,13 @@ h3 {
   color: #ffffff;
   font-size: 1em;
   transition: 0.1s;
+  text-align: center;
+  text-decoration: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
 .footer_but:active {
