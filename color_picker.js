@@ -41,6 +41,14 @@ function atoc(a) {
   if (a > 300 && a < 360) {
     blue = Math.round((360 - a) * colorPC);
   }
+  return [red, green, blue]
+  // var hexString = '#' + paddedHex(red) + paddedHex(green) + paddedHex(blue);
+  // return hexString.toUpperCase();
+}
+
+//мій код
+function RGBtoHEX(rgb) {
+  const [red, green, blue] = rgb;
   var hexString = '#' + paddedHex(red) + paddedHex(green) + paddedHex(blue);
   return hexString.toUpperCase();
 }
@@ -52,7 +60,7 @@ function onSVGSelect (e) {
     angle+=Math.PI;
   }
   var angleInDegrees = rtod(angle);
-  var color = atoc(angleInDegrees)
+  var color = RGBtoHEX(atoc(angleInDegrees))
   
   var selectX = Math.cos(angle) * 200;
   var selectY = Math.sin(angle) * 200;
@@ -64,6 +72,21 @@ function onSVGSelect (e) {
   hex.setAttribute('fill', color);
   hex.setAttribute('stroke', color);
   hex.textContent = color;
+
+  //мій код
+  console.log(angleInDegrees)
+  const h_range = $('.hsvw_range')
+  h_range.setAttribute('value', angleInDegrees)
+
+  const [red, green, blue] = atoc(angleInDegrees);
+  const rgbw_inputs = document.querySelectorAll('.rgbw_input');
+  console.log(rgbw_inputs)
+  const [red_input, green_input, blue_input, w_input] = rgbw_inputs;
+  red_input.setAttribute('value', red)
+  green_input.setAttribute('value', green)
+  blue_input.setAttribute('value', blue)
+  // w_input.setAttribute('value', red)
+  //мій код
 }
 
 function onSVGMouseDown() {
