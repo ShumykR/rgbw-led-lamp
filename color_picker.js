@@ -123,7 +123,7 @@ function HSVtoRGB(hsv) {
     default:
       break;
   }
-  return [Math.round(r*2.55), Math.round(g*2.55), Math.round(b*2.55)]
+  return [(r+0.01)/100, (g+0.01)/100, (b+0.01)/100]
 }
 
 function SVGChange (e, angleInDegrees) {
