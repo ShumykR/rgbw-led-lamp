@@ -5,7 +5,9 @@ const [h_range, s_range, v_range, w_range] = document.querySelectorAll('.hsvw_ra
 
 const selector = $('.color-picker .selector');
 const hex = $('.color-picker .hex');
-const svg = $('.color-picker');
+const circle = $('svg');
+
+const resolution = 1;
 
 
 function angleFor(x, y) {
@@ -29,29 +31,33 @@ function paddedHex(dec) {
 
 function atoc(a) {
   let red = 0, green = 0, blue = 0;
-  const colorPC = 255 / 60;
-  if (a >= 300 || a <= 60) red = 255;
-  if (a >= 60 && a <= 180) green = 255;
-  if (a >= 180 && a <= 300) blue = 255;
+  // const colorPC = 255 / 60;
+  const colorPC = resolution/60;
+  if (a >= 300 || a <= 60) red = 1;
+  if (a >= 60 && a <= 180) green = 1;
+  if (a >= 180 && a <= 300) blue = 1;
   if (a > 0 && a < 60) {
-    green = Math.round(a * colorPC);
+    green = (a * colorPC);
   }
   if (a > 60 && a < 120) {
-    red = Math.round((120 - a) * colorPC);
+    red = ((120 - a) * colorPC);
   }
   if (a > 120 && a < 180) {
-    blue = Math.round((a - 120) * colorPC);
+    blue = ((a - 120) * colorPC);
   }
   if (a > 180 && a < 240) {
-    green = Math.round((240 - a) * colorPC);
+    green = ((240 - a) * colorPC);
   }
   if (a > 240 && a < 300) {
-    red = Math.round((a - 240) * colorPC);
+    red = ((a - 240) * colorPC);
   }
   if (a > 300 && a < 360) {
-    blue = Math.round((360 - a) * colorPC);
+    blue = ((360 - a) * colorPC);
   }
-  return [red, green, blue]
+  // return [red, green, blue]
+  return [red, green, blue].map((color) => {
+    return ((color < 10 ? (color*resolution).toFixed(4) : color*resolution));
+  });
 }
 
 function ctoa(r, g, b) {
@@ -83,50 +89,64 @@ function ctoa(r, g, b) {
 
 //мій код
 function RGBtoHEX(rgb) {
-  const [red, green, blue] = rgb;
+  const rgb_in_255 = rgb.map(element => {
+    return Math.round((element/resolution*255));
+  });
+  const [red, green, blue] = rgb_in_255;
   const hexString = '#' + paddedHex(red) + paddedHex(green) + paddedHex(blue);
   return hexString.toUpperCase();
 }
 
-function HSVtoRGB(hsv) {
-  let r, g, b;
-  const [h, s, v] = hsv;
-  let a, Hi, Vmin, Vinc, Vdec;
-  Hi = Math.floor(h/60); Vmin = ((100 - s) * v)/100;
-  a = (v - Vmin) * (h % 60)/60;
-  Vinc = Vmin + a; Vdec = v - a;
-  switch (Hi) {
-    case 0:
-      r = v; g = Vinc; b = Vmin;
-      break;
+function RGBtoHSV(rgb) {
+  let h, s, v;
+  const [r, g, b] = rgb;
+  const [min, max] = [Math.min(...rgb), Math.max(...rgb)];
 
-    case 1:
-      r = Vdec; g = v; b = Vmin;
-      break;
+  if (max==r && g>=b) h = 60 * ((g-b)/(max-min)+0);
+  else if (max==r && g<b) h = 60 * ((g-b)/(max-min)+360);
+  else if (max==g) h = 60 * ((b-r)/(max-min)+120);
+  else if (max==b) h = 60 * ((r-g)/(max-min)+240);
 
-    case 2:
-      r = Vmin; g = v; b = Vinc;
-      break;
+  if (max==0) s = 0; else s = 1-(min/max);
+  v = max;
 
-    case 3:
-      r = Vmin; g = Vdec; b = v;
-      break;
-    
-    case 4:
-      r = Vinc; g = Vmin; b = v;
-      break;
-
-    case 5:
-      r = v; g = Vmin; b = Vdec;
-      break;
-
-    default:
-      break;
-  }
-  return [(r+0.01)/100, (g+0.01)/100, (b+0.01)/100]
+  return [s, v];
 }
 
-function SVGChange (e, angleInDegrees) {
+function HSVtoRGB(hsv) {
+  let r, g, b;
+  const h = hsv[0] / resolution * 359;
+  const [s, v] = hsv.slice(-2).map(value => value / resolution * 100);
+  let a, Hi, Vmin, Vinc, Vdec;
+
+  Hi = Math.floor(h/60); 
+  Vmin = ((100 - s) * v)/100;
+  a = (v - Vmin) * (h % 60)/60;
+  Vinc = Vmin + a; Vdec = v - a;
+
+  switch (Hi) {
+
+    case 0: r = v; g = Vinc; b = Vmin; break;
+
+    case 1: r = Vdec; g = v; b = Vmin; break;
+
+    case 2: r = Vmin; g = v; b = Vinc; break;
+
+    case 3: r = Vmin; g = Vdec; b = v; break;
+    
+    case 4: r = Vinc; g = Vmin; b = v; break;
+
+    case 5: r = v; g = Vmin; b = Vdec; break;
+
+    default: break;
+  }
+  // return [r/100, g/100, b/100]
+    return [r, g, b].map((color) => {
+      return (color / 100 * resolution).toFixed(4);
+  });}
+
+function circleChange (e, angleInDegrees) {
+  // console.log(e.offsetX, e.offsetY);
   const x = e.offsetX, y = e.offsetY;
   let angle, degree;
 
@@ -143,27 +163,30 @@ function SVGChange (e, angleInDegrees) {
     degree = angleInDegrees
   }
 
-  const color = RGBtoHEX(atoc(degree))
+  // const color = RGBtoHEX(atoc(degree));
+  const color = RGBtoHEX([+red_input.value, +green_input.value, +blue_input.value]);
   
   const selectX = Math.cos(angle) * 200;
   const selectY = Math.sin(angle) * 200;
   
+  // circle.style.filter = `brightness(${v_range.value})`;
+
   selector.setAttribute('cx', 200 + selectX);
   selector.setAttribute('cy', 200 + selectY);
   selector.setAttribute('fill', color);
-  
+
   hex.setAttribute('fill', color);
-  hex.setAttribute('stroke', color);
+  // hex.setAttribute('stroke', color);
   hex.textContent = color;
   console.log(degree)
   return degree;
 }
 
-function onSVGSelect(e) {
-  const angleInDegrees = SVGChange(e, NaN)
+function oncircleSelect(e) {
+  const angleInDegrees = circleChange(e, NaN)
   //мій код
-  h_range.value = angleInDegrees
-
+  h_range.value = angleInDegrees/359 * resolution
+  
   const [red, green, blue] = atoc(angleInDegrees);
   red_input.value = red
   green_input.value = green
@@ -172,18 +195,12 @@ function onSVGSelect(e) {
   //мій код
 }
 
-function onSVGMouseDown() {
-  svg.addEventListener('mousemove', onSVGSelect);
-}
-function onSVGMouseUp() {
-  svg.removeEventListener('mousemove', onSVGSelect, false);
-}
-
 function onH_Select(e) {
-  const degrees = e.target.value
-  SVGChange(e, degrees)
+  const degrees = Math.round(e.target.value * 359);
+  console.log(degrees)
+  circleChange(e, degrees)
 
-  const [red, green, blue] = atoc(degrees);
+  const [red, green, blue] = HSVtoRGB([h_range.value, s_range.value, v_range.value]);
   red_input.value = red
   green_input.value = green
   blue_input.value = blue
@@ -191,27 +208,22 @@ function onH_Select(e) {
 
 function RGB_Change(e) {
   let [red, green, blue] = [+red_input.value, +green_input.value, +blue_input.value];
-  SVGChange(e, ctoa(red, green, blue))
+  const angleInDegrees = circleChange(e, ctoa(red, green, blue));
+  [s_range.value, v_range.value] = RGBtoHSV([red, green, blue]);
+  h_range.value = angleInDegrees/359 * resolution;
 }
 
-function addListener(obj, click_f, down_f, up_f) {
-  obj.addEventListener('click', click_f);
-  obj.addEventListener('mousedown', down_f);
-  obj.addEventListener('mouseup', up_f);
-}
-
-/* Mouse events */
-addListener(svg, onSVGSelect, onSVGMouseDown, onSVGMouseUp);
+addListener(circle, oncircleSelect, oncircleMouseDown, oncircleMouseUp);
 h_range.addEventListener('input', onH_Select)
 s_range.addEventListener('input', (e) => {
-  const [red, green, blue] = HSVtoRGB([h_range.value, s_range.value*100, v_range.value*100])
-  console.log(red, green, blue)
+  const [red, green, blue] = HSVtoRGB([h_range.value, s_range.value, v_range.value])
+  // console.log(red, green, blue)
   red_input.value = red
   green_input.value = green
   blue_input.value = blue
 })
 v_range.addEventListener('input', (e) => {
-  const [red, green, blue] = HSVtoRGB([h_range.value, s_range.value*100, v_range.value*100])
+  const [red, green, blue] = HSVtoRGB([h_range.value, s_range.value, v_range.value])
   // console.log(red, green, blue)  
   red_input.value = red
   green_input.value = green
@@ -229,18 +241,33 @@ w_input.addEventListener('input', (e) => {
   w_range.value = e.target.value
 })
 
+
+/* Mouse events */
+function oncircleMouseDown() {
+  circle.addEventListener('mousemove', oncircleSelect);
+}
+function oncircleMouseUp() {
+  circle.removeEventListener('mousemove', oncircleSelect, false);
+}
+
+function addListener(obj, click_f, down_f, up_f) {
+  obj.addEventListener('click', click_f);
+  obj.addEventListener('mousedown', down_f);
+  obj.addEventListener('mouseup', up_f);
+}
+
 /* Touch events */
 window.addEventListener('touchstart', function onWindowTouchStart() {
-  svg.removeEventListener('click', onSVGSelect, false);
-  svg.removeEventListener('mousedown', onSVGMouseDown, false);
-  svg.removeEventListener('mousemove', onSVGSelect, false);
-  svg.removeEventListener('mouseup', onSVGMouseUp, false);
+  circle.removeEventListener('click', oncircleSelect, false);
+  circle.removeEventListener('mousedown', oncircleMouseDown, false);
+  circle.removeEventListener('mousemove', oncircleSelect, false);
+  circle.removeEventListener('mouseup', oncircleMouseUp, false);
   
-  svg.addEventListener('touchmove', function onSVGTouchMove(e) {
+  circle.addEventListener('touchmove', function oncircleTouchMove(e) {
     const rect = e.target.getBoundingClientRect();
     const touch = e.targetTouches[0];
     
-    onSVGSelect.call(svg, {
+    oncircleSelect.call(circle, {
       offsetX: touch.pageX - rect.left,
       offsetY: touch.pageY - rect.top
     });
